@@ -1,0 +1,24 @@
+error run 창에 에러 해결 힌트를 줬음
+데이터에 소스 url을 넣고
+디렉토리를 get file로 가지고 와서 batch img 사이즈 해주고
+from directory
+6:2:2 = training/validation(training하는 도중에, 베타 테스트)/test(알파 테스트)
+seed는 셔플링 난수
+train data set take one
+img 라벨이 32쌍
+i 번째 사진을 show
+image and label의 batch를 print 하고 얘네가 어떤 형태를 갖는 출력
+오토튠이 뭘까요
+각축을 255로 나눠주는 간단한 정규화 작업
+training data set x,y가 mapping에 들어가면 normaliztion_layer(x), y가 나옴
+x를 normalization한 함수, y를 맵핑
+rescaling이라는 함수 - normalization_layer : 함수를 변수처럼 사용 (tf 때문)
+train ds는 32개 씩 따다다다 있는 데이터 구조 map이라는 함수는 하나씩 돌아가면서 data를 처리함 
+map으로 하나씩 바꿀 때 , 반복문 그걸 하나하 어떻게 바꿀지가 함수
+32개의 (x,y)를 통째로 input으로 받아서 map하면 이렇게 된다~ -> lambda 함수
+normalized_ds를 하나씩 돌아가면서 반복문으로 쓰고 싶은데 map함수를 순회하는 애를 반복하기 어려워서 iterator라는 자료구조 (iterator class 내의 next라는 함수를 이용해서 반복할수 있게 만들어놓은것) 그래서 iter를 씌워놓고 거기 위해 next ( 첫번쨰 원소 꺼냈다가 두번째 원소 꺼냈다가) next를 한 번만 쓰는 함수 : take (1)
+(filter size, filter size, channel(컬러니까 RGB 3, 흑백이면 1), num_of_filters)
+pooling size랑 std를 2by2로 많이 쓴다 그러면 딱 절반이 된다
+3by1은 얼마 안줄기 때문에 너무 오래 걸린다
+vggnet에다가 
+함수처럼 쓰면 call을 자동 호출되도록 내부 세팅 되어있다.
