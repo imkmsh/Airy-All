@@ -2,6 +2,21 @@
 
 기존의 Fully-Connected Neural Network가 가지고 있는 한계를 이해하고 이것을 개선하기 위해 연구 시작
 
+- 기본 구조
+
+: input layer, 3 conv layer, 2 subsampling layer, full-connected
+
+input - C1 - S1 - C2 - S2 - C3 - F - output
+
+Every layer's activation function: tanh
+
+- C1 Layer  
+  input(32x32) → convolution with 6 filter(5x5) → 6 28x28 feature map  
+  why 6 feature map: each filter makes each feature map  
+  why the size decreased from 32 to 28: no padding
+  
+
+
 # AlexNet
 # VGGNet 
 
