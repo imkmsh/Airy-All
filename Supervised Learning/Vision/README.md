@@ -1,10 +1,11 @@
-- lenet5
-- Alexnet
-- VGGNet 
-- GoogleLeNet
-- Resnet
+# LeNet5
 
-#Alexnet이 VGGNet으로 발전할 때,
+기존의 Fully-Connected Neural Network가 가지고 있는 한계를 이해하고 이것을 개선하기 위해 연구 시작
+
+# AlexNet
+# VGGNet 
+
+Alexnet이 VGGNet으로 발전할 때,
 1. 수용영역은 같은데 파라미터 수 줄일 수 있음
    - ex) 
       - 11 x 11 x D filter N개, 계층 1개
@@ -18,7 +19,9 @@
 4. 마지막에 Fully Connected Layer 대신 Fully Convolutional Layer을 제안 (필터 모양을 아예 똑같게)
 5. dropout으로 정규화
 
-#Alexnet이 GoogleLeNet으로 발전할 때,
+# GoogleLeNet
+
+Alexnet이 GoogleLeNet으로 발전할 때,
 - Inception Block
   - 1 x 1 conv
   - 1 x 1 conv 3 x 3 conv
@@ -30,3 +33,5 @@
 1. 매개변수 개수가 VGG보다 적음
 2. Filter_size 중요도를 스스로 선택
 3. Concat으로 비선형성 증가
+
+# Resnet
