@@ -4,22 +4,15 @@
 
 - 기본 구조
 
-<<<<<<< HEAD
 input layer, 3 conv layer, 2 subsampling layer, full-connected
-=======
-: input layer, 3 conv layer, 2 subsampling layer, full-connected
->>>>>>> e40792879c0a9d3dd884f85c22ddf0dbe8dd5c32
 
 input - C1 - S1 - C2 - S2 - C3 - F - output
 
 Every layer's activation function: tanh
 
 - C1 Layer  
-<<<<<<< HEAD
+
   input(32x32) → convolution with 6 filters(5x5) → 6 28x28 feature map  
-=======
-  input(32x32) → convolution with 6 filter(5x5) → 6 28x28 feature map  
->>>>>>> e40792879c0a9d3dd884f85c22ddf0dbe8dd5c32
   why 6 feature map: each filter makes each feature map  
   why the size decreased from 32 to 28: no padding
   
