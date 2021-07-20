@@ -1,7 +1,7 @@
 - lenet5
 - Alexnet
+- VGGNet 
 - GoogleLeNet
-- VGGNet
 - Resnet
 
 #Alexnet이 VGGNet으로 발전할 때,
