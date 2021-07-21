@@ -71,7 +71,7 @@ Fully Connected, 84개의 unit에 연결
 [기본 구조(그림)](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F99FEB93C5C80B5192E), input size가 224로 되어있는데 227이 맞음
 
 - C1 Layer  
-96개의 11 x 11 x 3 커널로 입력 영상을 컨볼루션, stride 4, 96장의 55 x 55 feature map 산출, ReLU,  3 x 3 overlapping max pooling이 stride 2로, 96장의 27 x 27 feature map, 수렴 속도를 높이기 위해 local response normalization, feature map size 유지
+96개의 11 x 11 x 3 커널로 입력 영상을 컨볼루션, stride 4, 96장의 55 x 55 feature map 산출, ReLU,  3 x 3 overlapping max pooling이 stride 2로, 96장의 27 x 27 feature map, 수렴 속도를 높이기 위해 local response normalization(→ 현재는 batch normalization을 사용한다고 함), feature map size 유지
 
 
 - C2 Layer  
@@ -118,6 +118,8 @@ Alexnet이 VGGNet으로 발전할 때,
 5. dropout으로 정규화
 
 # GoogleLeNet
+
+![googlelenet](./img/googlelenet.png)
 
 Alexnet이 GoogleLeNet으로 발전할 때,
 - Inception Block
