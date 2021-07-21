@@ -1,4 +1,3 @@
-import numpy as np
 import tensorflow as tf
 import matplotlib.pyplot as plt
 
@@ -13,7 +12,8 @@ val_y = train_y[:5000]
 
 lenet5_model = tf.keras.Sequential()
 
-lenet5_model.add(tf.keras.layers.Conv2D(filters=6, kernel_size=5, activation='tanh', input_shape=train_x[0].shape))  # C1
+lenet5_model.add(
+    tf.keras.layers.Conv2D(filters=6, kernel_size=5, activation='tanh', input_shape=train_x[0].shape))  # C1
 
 lenet5_model.add(tf.keras.layers.AveragePooling2D())  # S2
 
@@ -34,4 +34,3 @@ lenet5_model.compile(optimizer='adam', loss=tf.keras.losses.sparse_categorical_c
 lenet5_model.fit(train_x, train_y, epochs=10, validation_data=(val_x, val_y))
 
 lenet5_model.evaluate(test_x, test_y)
-
