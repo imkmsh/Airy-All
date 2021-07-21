@@ -119,7 +119,7 @@ Alexnet이 VGGNet으로 발전할 때,
 
 # GoogleLeNet
 
-![googlelenet](./img/googlelenet.png)
+![googlelenet](.\img\googlelenet.png)
 
 Alexnet이 GoogleLeNet으로 발전할 때,
 - Inception Block
