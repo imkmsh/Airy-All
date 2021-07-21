@@ -6,7 +6,7 @@
 
 input layer, 3 conv layer, 2 subsampling layer, full-connected
 
-input - C1 - S1 - C2 - S2 - C3 - F - output
+input - C1 - S2 - C3 - S4 - C5 - F6 - output
 
 Every layer's activation function: tanh
 
@@ -16,6 +16,24 @@ Every layer's activation function: tanh
   why 6 feature map: each filter makes each feature map  
   why the size decreased from 32 to 28: no padding
   
+
+- S2 Layer  
+2 x 2 필터를 stride 2로 설정
+  
+
+- C3 Layer  
+6장의 14 x 14 feature map으로부터 16장의 10 x 10 feature map을 산출
+  
+
+- S4 Layer  
+10 x 10 feature map 영상을 5 x 5로
+  
+
+- C5 Layer  
+16개의 5 x 5 영상을 받아 kernel 크기의 convolution을 수행하기 때문에 출력은 1 x 1 크기의 feature map
+  
+- F6 Layer  
+Fully Connected, 84개의 unit에 연결
 
 
 # AlexNet
