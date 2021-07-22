@@ -2,7 +2,7 @@
 
 기존의 Fully-Connected Neural Network가 가지고 있는 한계를 이해하고 이것을 개선하기 위해 연구 시작
 
-[기본 구조(그림)](https://m.blog.naver.com/laonple/221218707503?view=img_1)
+![기본 구조(그림)](https://m.blog.naver.com/laonple/221218707503?view=img_1)
 
 input layer, 3 conv layer, 2 subsampling layer, full-connected
 
@@ -68,7 +68,7 @@ Fully Connected, 84개의 unit에 연결
 
 2개의 GPU를 기반으로 한 병렬 구조
 
-[기본 구조(그림)](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F99FEB93C5C80B5192E), input size가 224로 되어있는데 227이 맞음
+![기본 구조(그림)](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F99FEB93C5C80B5192E), input size가 224로 되어있는데 227이 맞음
 
 - C1 Layer  
 96개의 11 x 11 x 3 커널로 입력 영상을 컨볼루션, stride 4, 96장의 55 x 55 feature map 산출, ReLU,  3 x 3 overlapping max pooling이 stride 2로, 96장의 27 x 27 feature map, 수렴 속도를 높이기 위해 local response normalization(→ 현재는 batch normalization을 사용한다고 함), feature map size 유지
