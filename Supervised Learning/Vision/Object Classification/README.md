@@ -102,6 +102,7 @@ Fully Connected, 84개의 unit에 연결
 1000개의 뉴런, 전 단계의 4096개 뉴런과 fully connected, softmax
 
 # VGGNet 
+# 마지막에 Full conv
 
 Alexnet이 VGGNet으로 발전할 때,
 1. 수용영역은 같은데 파라미터 수 줄일 수 있음

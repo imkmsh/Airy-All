@@ -93,8 +93,8 @@ def make_googlelenet(activation='relu'):
 
     pool5_7x7_s1 = AveragePooling2D((7, 7), strides=(1, 1), name='pool5/7x7_s2')(inception_5b)
 
-    loss3_flat = Flatten()(pool5_7x7_s1)
-
+    loss3_flat = Flatten(pool5_7x7_s1)
+    
     pool5_drop_7x7_s1 = Dropout(0.4)(loss3_flat)
 
     loss3_classifier_act = Dense(1000, name='loss3/classifier', activation='softmax', W_regularizer=l2(0.0002))(
