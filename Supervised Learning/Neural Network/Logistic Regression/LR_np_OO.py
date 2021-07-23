@@ -1,43 +1,3 @@
-class MathOfML:
-    # 선형변환 (선형함수)
-    @staticmethod
-    def linear(x, w, b):
-        linear_cache = [x, w, b]
-        # 나중에도 필요하니까 cache로 저장
-        z = np.matmul(x, w) + b
-        # z로 저장
-        return z, linear_cache
-
-    @staticmethod
-    def linear_grad(dz, linear_cache):
-        [x, w, b] = linear_cache
-        grads = {"dw": np.matmul(x.T, dz),
-                 "db": np.mean(dz)}
-        return grads
-
-    # 비선형변환 (활성함수)
-    @staticmethod
-    def sigmoid(z):
-        activation_cache = [z]
-        a = 1 / (1 + np.exp(-z))
-        return a, activation_cache
-
-    @staticmethod
-    def sigmoid_grad(dloss, activation_cache):
-        # L 함수 전체 w로 미분 (dL/da)(da/dz)(dz/dw)
-        [z] = activation_cache
-        a = 1 / (1 + np.exp(-z))
-        return dloss * a * (1 - a)
-
-    @staticmethod
-    def cross_entropy_gradient(y, a, m):
-        return -(y / a - (1 - y) / (1 - a)) / m
-
-    @staticmethod
-    def mean_square_error_gradient(y, a, m):
-        return (a - y) / m
-
-
 class DataOfML:
     def __init__(self):
         self.result = 0
@@ -97,9 +57,9 @@ class Neuron:
         return self.params
 
     def forward(self, x, w, b):
-        z, linear_cache = MathOfML.linear(x, w, b)
+        z, linear_cache = MathOfNN.linear(x, w, b)
         # 선형변환하고
-        a, activation_cache = MathOfML.sigmoid(z)
+        a, activation_cache = MathOfNN.sigmoid(z)
         # 시그모이드 돌리고
         return a, linear_cache, activation_cache
 
@@ -114,15 +74,15 @@ class Neuron:
     def loss_grad(self, y, a, m, loss_function):
         # loss를 미분
         if loss_function == "cross_entropy":
-            return MathOfML.cross_entropy_gradient(y, a, m)
+            return MathOfNN.cross_entropy_gradient(y, a, m)
         elif loss_function == "mean_square_error":
-            return MathOfML.mean_square_error_gradient(y, a, m)
+            return MathOfNN.mean_square_error_gradient(y, a, m)
 
     # forward, calc_loss, loss_grad, sigmoid_grad, linear_grad : dw, db를 구한다 => backward
     def backward(self, y, a, m, linear_cache, activation_cache, loss_function):
         dloss = self.loss_grad(y, a, m, loss_function)
-        dz = MathOfML.sigmoid_grad(dloss, activation_cache)
-        grads = MathOfML.linear_grad(dz, linear_cache)
+        dz = MathOfNN.sigmoid_grad(dloss, activation_cache)
+        grads = MathOfNN.linear_grad(dz, linear_cache)
         return grads
 
     # for/backward 한꺼번에
@@ -154,6 +114,7 @@ if __name__ == "__main__":
     import random
     import numpy as np
     import matplotlib.pyplot as plt
+    from ..util.math import MathOfNN
 
     x_train, y_train = DataOfML.make_data(5000, negative_mean=[10.0, 1.0], negative_cov=[[3.0, 1.0], [1.0, 3.0]],
                                           positive_mean=[1.0, 10.0], positive_cov=[[2.0, 1.0], [1.0, 2.0]])

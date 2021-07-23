@@ -1,93 +1,3 @@
-class MathOfDNN:
-    def __init__(self):
-        self.result = 0
-
-    @staticmethod
-    def linear(a, w, b):
-        linear_cache = [a, w, b]
-        z = np.matmul(a, w) + b
-        return z, linear_cache
-
-    @staticmethod
-    def linear_grad(dz, linear_cache):
-        [a, w, b] = linear_cache
-        grads = {"dw": np.matmul(a.T, dz),
-                 "db": np.mean(dz, axis=0, keepdims=True),
-                 "da": np.matmul(dz, w.T)}
-        return grads
-
-    @staticmethod
-    def sigmoid(z):
-        activation_cache = [z]
-        a = 1 / (1 + np.exp(-z))
-        return a, activation_cache
-
-    @staticmethod
-    def sigmoid_grad(da, activation_cache):
-        [z] = activation_cache
-        a = 1 / (1 + np.exp(-z))
-        return da * a * (1 - a)
-
-    @staticmethod
-    def relu(z):
-        activation_cache = [z]
-        a = np.maximum(0, z)
-        return a, activation_cache
-
-    @staticmethod
-    def relu_gradient(da, activation_cache):
-        [z] = activation_cache
-        dz = np.ones(z.shape)
-        dz[z < 0] = 0
-        return da * dz
-
-    @staticmethod
-    def leaky_relu(z):
-        activation_cache = [z]
-        a = np.maximum(0.01 * z, z)
-        return a, activation_cache
-
-    @staticmethod
-    def leaky_relu_gradient(da, activation_cache):
-        [z] = activation_cache
-        dz = np.ones(da.shape)
-        dz[z < 0] = 0.01
-        return da * dz
-
-    @staticmethod
-    def softmax(z):
-        activation_cache = [z]
-        z = z - np.max(z, axis=1, keepdims=True)
-        a = np.exp(z) / np.sum(np.exp(z), axis=1, keepdims=True)
-        return a, activation_cache
-
-    @staticmethod
-    def softmax_gradient(dloss, activation_cache):
-        [z] = activation_cache
-        z = z - np.max(z, axis=1, keepdims=True)
-        a = np.exp(z) / np.sum(np.exp(z), axis=1, keepdims=True)
-        dz = np.zeros(dloss.shape)
-        (m, dim) = dloss.shape
-        for k in range(m):
-            middle_matrix = np.zeros((dim, dim))
-            for i in range(dim):
-                for j in range(dim):
-                    if i == j:
-                        middle_matrix[i, j] = a[k, i] * (1 - a[k, i])
-                    else:
-                        middle_matrix[i, j] = -(a[k, i] * a[k, j])
-            dz[k, :] = np.matmul(dloss[k, :], middle_matrix)
-        return dz
-
-    @staticmethod
-    def cross_entropy_grad(y, a, m):
-        return -(y / a) / m
-
-    @staticmethod
-    def mean_square_error_grad(y, a, m):
-        return (a - y) / m
-
-
 class DataOfDNN:
     def __init__(self):
         self.result = 0
@@ -139,16 +49,16 @@ class Neuron:
         return a
 
     def single_forward(self, a, w, b):
-        z, linear_cache = MathOfDNN.linear(a, w, b)
+        z, linear_cache = MathOfNN.linear(a, w, b)
         activation_cache = 0
         if self.activation == "relu":
-            a, activation_cache = MathOfDNN.relu(z)
+            a, activation_cache = MathOfNN.relu(z)
         elif self.activation == "leaky_relu":
-            a, activation_cache = MathOfDNN.leaky_relu(z)
+            a, activation_cache = MathOfNN.leaky_relu(z)
         elif self.activation == "sigmoid":
-            a, activation_cache = MathOfDNN.sigmoid(z)
+            a, activation_cache = MathOfNN.sigmoid(z)
         elif self.activation == "softmax":
-            a, activation_cache = MathOfDNN.softmax(z)
+            a, activation_cache = MathOfNN.softmax(z)
         cache = linear_cache, activation_cache
         return a, cache
 
@@ -172,22 +82,22 @@ class Neuron:
 
     def loss_grad(self, y, a, loss_function):
         if loss_function == "cross_entropy":
-            return MathOfDNN.cross_entropy_grad(y, a, self.m)
+            return MathOfNN.cross_entropy_grad(y, a, self.m)
         elif loss_function == "mean_square_error":
-            return MathOfDNN.mean_square_error_grad(y, a, self.m)
+            return MathOfNN.mean_square_error_grad(y, a, self.m)
 
     def single_backward(self, da, cache):
         linear_cache, activation_cache = cache
         dz = 0
         if self.activation == "sigmoid":
-            dz = MathOfDNN.sigmoid_grad(da, activation_cache)
+            dz = MathOfNN.sigmoid_grad(da, activation_cache)
         elif self.activation == "relu":
-            dz = MathOfDNN.relu_gradient(da, activation_cache)
+            dz = MathOfNN.relu_gradient(da, activation_cache)
         elif self.activation == "leaky_relu":
-            dz = MathOfDNN.leaky_relu_gradient(da, activation_cache)
+            dz = MathOfNN.leaky_relu_gradient(da, activation_cache)
         elif self.activation == "softmax":
-            dz = MathOfDNN.softmax_gradient(da, activation_cache)
-        grads = MathOfDNN.linear_grad(dz, linear_cache)
+            dz = MathOfNN.softmax_gradient(da, activation_cache)
+        grads = MathOfNN.linear_grad(dz, linear_cache)
         return grads['dw'], grads['db'], grads['da']
 
     def backward(self, y, a, m, caches, loss_function):
@@ -266,6 +176,7 @@ class DNN:
 if __name__ == "__main__":
     import numpy as np
     import matplotlib.pyplot as plt
+    from ..util.math import MathOfNN
 
 x_train, y_train = DataOfDNN.make_gaussian_data(1000, negative_mean=[1.0, 1.0], negative_cov=[[3.0, 1.0], [1.0, 3.0]],
                                                 positive_mean=[20.0, 20.0], positive_cov=[[2.0, 1.0], [1.0, 2.0]],
