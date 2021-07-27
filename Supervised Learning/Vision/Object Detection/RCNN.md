@@ -138,6 +138,8 @@ Fast RCNN은 RCNN과 다르게 동일한 Region Proposal 방식을 사용하지�
 
 ![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FdxarLQ%2Fbtq7P8LLHS4%2FkhwEmhgL2FrmpOksxIRKJK%2Fimg.png)
 
+![arch](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FzJoAZ%2FbtqBBU4w395%2FBMWWphbMKuo4HbzFjIM0T0%2Fimg.png)
+
 CPU에서 Selective Search하는 속도 단점을 개선하기 위해 **GPU**에서 연산, 이를 위해 **Region Proposal Network(RPN)** 도입, Feature map을 보고 어디에 물체가 있을지 예측, RPN에서 한 번 forwarding하면 어디에 물체가 있을 법한지 예측할 수 있기 떄문에 더 빠르고 정확하게 모델 동작, 나머지는 Fast RCNN과 동일하게 Softmax
 
 Faster RCNN은 Fast RCNN에서 병목현상에 해당하던 CPU를 사용하여 Region proposal 하는 부분을 GPU 장치에서 수행하도록 한다. 이게 Faster RCNN의 핵심 RPN(Region Proposal Networks) 이다. 
