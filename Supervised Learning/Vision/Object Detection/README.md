@@ -11,7 +11,11 @@
 
 # Faster-R-CNN
 
-![architecture](https://www.researchgate.net/profile/Zhipeng-Deng-2/publication/324903264/figure/fig2/AS:640145124499471@1529633899620/The-architecture-of-Faster-R-CNN.png)
+![architecture](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fdhq4iV%2FbtqBaAFDl4d%2FIZdxlDX5mkPMdnoKy2f2k0%2Fimg.png)
+
+![simarch](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FzJoAZ%2FbtqBBU4w395%2FBMWWphbMKuo4HbzFjIM0T0%2Fimg.png)
+
+![ARCH](https://user-images.githubusercontent.com/45263010/73349987-8b3e4980-42cf-11ea-821e-98f5437698b7.PNG)
 
 Faster-RCNN is composed of 3 neural networks — Feature Network, Region Proposal Network (RPN), Detection Network
 
@@ -27,6 +31,22 @@ Faster-RCNN is composed of 3 neural networks — Feature Network, Region Proposa
   ![Feature](https://miro.medium.com/max/700/1*YWMVZZrj0IxVV54ig92xtg.png)
  
 ## RPN
+
+RPN의 input 값은 이전 CNN 모델에서 뽑아낸 feature map  
+Region proposal을 생성하기 위해 feature map위에 n x n window를 sliding window시킴  
+이때, object의 크기와 비율이 어떻게 될지모르므로 k개의 anchor box를 미리 정의  
+여기서는 9개의 anchor box를 이용
+
+RPN에서 이렇게 1x1 convolution(fully connected later)을 이용하여 classification과 bbox regression을 계산  
+이때 네트워크를 가볍게 만들기 위해 binary classification으로 bbox에 물체가 있나 없나만 판단  
+무슨 물체인지 classification하는 것은 마지막 classification 단계에서
+
+
+positive / negative examples 뽑기
+![기준](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FIEkcY%2FbtqBcwbZTpn%2FvSU5RjT6EBjvUkp2mtVpfk%2Fimg.png)
+
+
+
 - a simple network with a 3 convolutional layers
 - one common layer which feeds into a two layers — one for classification and the other for bounding box regression
 - generate a number of bounding boxes called Region of Interests (ROIs) that has high probability of containing any object
@@ -47,11 +67,26 @@ Faster-RCNN is composed of 3 neural networks — Feature Network, Region Proposa
 
 ![그림](https://miro.medium.com/max/700/1*CmOhPmqSoDCI_Yk0LWBVbg.png)
 
+### NMS
+
 - Non-Maximum Suppression (NMS) is used in the fist step of reduction
 - NMS removes boxes that overlaps with other boxes that has higher scores ( scores are unnormalized probabilities , e.g. before softmax is applied to normalize)
 - about 2000 boxes are extracted during training phase
 - they are further reduced through sampling to about 256 before entering the Detection Network  
 
+Faster R-CNN에 대한 학습이 완료된 후 RPN모델을 예측시키며 한 객체당 여러 proposal값  
+NMS알고리즘을 사용하여 proposal의 개수를 줄임  
+
+1. box들의 score(confidence)를 기준으로 정렬한다.
+
+2. score가 가장 높은 box부터 시작해서 다른 모든 box들과 IoU를 계산해서 0.7이상이면 같은 객체를 detect한 box라고
+생각할 수 있기 때문에 해당 box는 지운다. 
+
+3. 최종적으로 각 object별로 score가 가장 높은 box 하나씩만 남게 된다.
+
+![NMS 전](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FlAtRG%2FbtqBGgAw0Dd%2FxakhVprkQJKjnztAGjJRl1%2Fimg.png)
+
+![NMS 후](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbFQwuR%2FbtqBG0jD3nh%2FbhkdKFOk0PbkmWAh9qiDQ1%2Fimg.png)
 
 - to generate labels for RPN classification, IOU of all the bounding boxes against all the ground truth boxes are taken
 - the IOUs are used to label the 256 ROIs as foreground and background, and ignored
@@ -104,6 +139,8 @@ loss = abs(d) — 1 / (2 * sigma**2)
 - the set of cropped features for each image are passed through the Detection Network as a batch
 - final dense layers output for each cropped feature, the score and bounding box for each class (e.g. 256 x C, 256 x 4C in one-hot encoding form, where C is the number of classes)
 
+![bbox](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FwlAfS%2FbtqBdUdzIDo%2FekiUcXgksRellFXSBn5H6K%2Fimg.png)
+![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FHaclG%2FbtqBdUkizUl%2FOzPRkcX2FPJPFmN8BKlzl1%2Fimg.png)
 
 - to generate label for Detection Network classification, IOUs of all the ROIs and the ground truth boxes are calculated
 - depending on IOU thresholds (e.g. foreground above 0.5 , and background between 0.5 and 0.1), labels are generated for a subset of ROIs
@@ -112,6 +149,20 @@ loss = abs(d) — 1 / (2 * sigma**2)
 - following a similar approach to the RPN target generation, bounding box targets are also generated
 - these targets are in the compact form as mentioned previously, hence are expanded to the one-hot encoding for calculation of loss.
 
+![최종 loss](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FWZhx2%2FbtqBpQ9gGSl%2FeufJfGDn01qTTJWhuzgggK%2Fimg.png)
+
+---
+- i: index of an anchor  
+- p i: predicted probability  
+- t i : parameterized coordinates
+- N cls: mini-batch size
+- N reg: the number of anchor locations
+- λ: balancing parameter (default = 10)
+- L cls: cross-entropy loss
+- L reg : L1 smooth loss
+---
+
+![bbox loss](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fbpk9es%2FbtqBp5kSBLg%2FikFlnDkasgvuWjSe7a6JQK%2Fimg.png)
 
 - the loss calculation is again similar to that of the RPN network
 - For classification sparse cross-entropy is used and for bounding boxes, Smooth L1 Loss is used
