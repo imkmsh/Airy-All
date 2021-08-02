@@ -118,11 +118,11 @@ Alexnet이 VGGNet으로 발전할 때,
 4. 마지막에 Fully Connected Layer 대신 Fully Convolutional Layer을 제안 (필터 모양을 아예 똑같게)
 5. dropout으로 정규화
 
-# GoogleLeNet
+# GoogLeNet
 
-![googlelenet](../../img/googlelenet.png)
+![googlenet](../../img/googlenet.png)
 
-Alexnet이 GoogleLeNet으로 발전할 때,
+Alexnet이 googlenet으로 발전할 때,
 - Inception Block
   - 1 x 1 conv
   - 1 x 1 conv 3 x 3 conv

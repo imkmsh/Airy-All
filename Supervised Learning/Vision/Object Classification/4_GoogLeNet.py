@@ -10,18 +10,25 @@ from PIL import Image
 def inception_block(input_layer, filter1x1, filter3x3, filter5x5, reduce3x3, reduce5x5, pool_proj,
                     activation='relu'):
     conv1x1 = Conv2D(filter1x1, kernel_size=(1, 1), padding='same', activation=activation)(input_layer)
+
     conv3x3_reduce = Conv2D(reduce3x3, kernel_size=(1, 1), padding='same', activation=activation)(input_layer)
+
     conv3x3 = Conv2D(filter3x3, kernel_size=(3, 3), padding='same', activation=activation)(conv3x3_reduce)
+
     conv5x5_reduce = Conv2D(reduce5x5, kernel_size=(1, 1), padding='same', activation=activation)(input_layer)
+
     conv5x5 = Conv2D(filter5x5, kernel_size=(5, 5), padding='same', activation=activation)(conv5x5_reduce)
+
     pooling = MaxPooling2D((3, 3), strides=(1, 1), padding='same')(input_layer)
+
     pool_proj = Conv2D(pool_proj, kernel_size=(1, 1), padding='same', activation=activation)(pooling)
+
     output_layer = concatenate([conv1x1, conv3x3, conv5x5, pool_proj])
 
     return output_layer
 
 
-def make_googlelenet(activation='relu'):
+def make_googlenet(activation='relu'):
     inputs = Input(shape=(224, 224, 3))
 
     conv1_7x7_s2 = Conv2D(64, activation=activation, kernel_size=(7, 7), name='conv1/7x7_s2', strides=(2, 2),
@@ -100,9 +107,9 @@ def make_googlelenet(activation='relu'):
     loss3_classifier_act = Dense(1000, name='loss3/classifier', activation='softmax', W_regularizer=l2(0.0002))(
         pool5_drop_7x7_s1)
 
-    googlelenet = Model(input=inputs, output=[loss1_classifier_act, loss2_classifier_act, loss3_classifier_act])
+    googlenet = Model(input=inputs, output=[loss1_classifier_act, loss2_classifier_act, loss3_classifier_act])
 
-    return googlelenet
+    return googlenet
 
 
 if __name__ == "__main__":
@@ -115,7 +122,7 @@ if __name__ == "__main__":
     img = img.transpose((2, 0, 1))
     img = np.expand_dims(img, axis=0)
 
-    model = make_googlelenet()
+    model = make_googlenet()
     sgd = tf.keras.optimizers.SGD(lr=0.1, decay=1e-6, momentum=0.9, nesterov=True)
     model.compile(optimizer=sgd, loss='categorical_crossentropy')
     out = model.predict(img)
