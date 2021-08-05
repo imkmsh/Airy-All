@@ -18,22 +18,21 @@ img_height = 180
 img_width = 180
 
 # 2. 모델 빌드: resnet50
-def resnet50_model_conv1():
-    resnet50_model_conv1.add(tf.keras.layers.ZeroPadding2D(padding=3))
-    resnet50_model_conv1.add(tf.keras.layers.Conv1D(filters=64, kernel_size=(7, 7), strides=2))
-    resnet50_model_conv1.add(tf.keras.layers.BatchNormalization())
-    resnet50_model_conv1.add(tf.keras.layers.ZeroPadding2D(padding=1))
+def resnet50_model_conv1(x):
+    x = tf.keras.layers.ZeroPadding2D(padding=3)(x)
+    x = tf.keras.layers.Conv1D(filters=64, kernel_size=(7, 7), strides=2)(x)
+    x = tf.keras.layers.BatchNormalization()(x)
+    x = tf.keras.layers.ZeroPadding2D(padding=1)(x)
 
-def resnet50_model_conv2():
-    resnet50_model_conv2.add(tf.keras.layers.MaxPooling2D(pool_size=3, strides=2))
-    resnet50_model_conv2.add(tf.keras.layers.Conv2D(filters=64, kernel_size=1, strides=1, padding='valid'))
-    resnet50_model_conv2.add(tf.keras.layers.BatchNormalization())
-    resnet50_model_conv2.add(tf.keras.layers.Conv2D(filters=64, kernel_size=3, strides=1, padding='same'))
-    resnet50_model_conv2.add(tf.keras.layers.BatchNormalization())
-    resnet50_model_conv2.add(tf.keras.layers.Conv2D(filters=256, kernel_size=1, strides=1, padding='valid'))
-    resnet50_model_conv2.add(tf.keras.layers.BatchNormalization())
-    resnet50_model_conv2.add(tf.keras.layers.Conv2D(filters=256, kernel_size=1, strides=1, padding='valid'))
-
+def resnet50_model_conv2(x):
+    x = tf.keras.layers.MaxPooling2D(pool_size=3, strides=2))
+    x = tf.keras.layers.Conv2D(filters=64, kernel_size=1, strides=1, padding='valid'))
+    x = tf.keras.layers.BatchNormalization())
+    x = tf.keras.layers.Conv2D(filters=64, kernel_size=3, strides=1, padding='same'))
+    x = tf.keras.layers.BatchNormalization())
+    x = tf.keras.layers.Conv2D(filters=256, kernel_size=1, strides=1, padding='valid'))
+    x = tf.keras.layers.BatchNormalization())
+    pre_x = tf.keras.layers.Conv2D(filters=256, kernel_size=1, strides=1, padding='valid'))
 
 
 model = tf.keras.applications.ResNet50(include_top=True, weights=None, input_tensor=None,
