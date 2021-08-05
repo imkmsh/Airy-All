@@ -32,20 +32,21 @@ alexnet_model.compile(optimizer='adam', loss=tf.keras.losses.sparse_categorical_
 cp = ModelCheckpoint("./weights.h5", save_weights_only=True, save_best_only=True, monitor="val_accuracy")
 hist = alexnet_model.fit(x=train_x, y=train_y, epochs=10, validation_data=(val_x, val_y), callbacks=[cp])
 
-print(hist.history['loss'])
-print(hist.history['acc'])
-
 alexnet_model.evaluate(test_x, test_y)
 
 fig, loss_ax = plt.subplots()
-acc_ax = loss_ax.twinx()
 loss_ax.plot(hist.history['loss'], 'y', label='train loss')
 loss_ax.plot(hist.history['val_loss'], 'r', label='val loss')
 loss_ax.set_xlabel('epoch')
 loss_ax.set_ylabel('loss')
 loss_ax.legend(loc='upper left')
-acc_ax.plot(hist.history['acc'], 'b', label='train acc')
-acc_ax.plot(hist.history['val_acc'], 'g', label='val acc')
+plt.show()
+plt.savefig('loss.png')
+
+fig, acc_ax = plt.subplots()
+acc_ax.plot(hist.history['accuracy'], 'b', label='train accuracy')
+acc_ax.plot(hist.history['val_accuracy'], 'g', label='val accuracy')
 acc_ax.set_ylabel('accuracy')
 acc_ax.legend(loc='upper left')
 plt.show()
+plt.savefig('accuracy.png')
