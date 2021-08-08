@@ -64,7 +64,162 @@ def resnet50_model_conv2(x):
 
     return x
 
+def resnet50_model_conv3(x):
+    org_x = x
 
+    x = tf.keras.layers.Conv2D(filters=128, kernel_size=1, strieds=2, padding='valid')(org_x)
+    x = tf.keras.layers.BatchNormalization()(x)
+    x = tf.keras.layers.Activation('relu')(x)
+
+    x = tf.keras.layers.Conv2D(filters=128, kernel_size=3, strides=1, padding='same')(x)
+    x = tf.keras.layers.BatchNormalization()(x)
+    x = tf.keras.layers.Activation('relu')(x)
+
+    x = tf.keras.layers.Conv2D(filters=512, kernel_size=1, strides=1, padding='valid')(x)
+    x = tf.keras.layers.BatchNormalization()(x)
+
+    ano_x = tf.keras.layers.Conv2D(filters=512, kernel_size=1, strides=2, padding='valid')(org_x)
+    ano_x = tf.keras.layers.BatchNormalization()(ano_x)
+
+    x = tf.keras.layers.Add()([x, ano_x])
+    x = tf.keras.layers.Activation('relu')(x)
+
+    for i in range(3):
+        x = tf.keras.layers.Conv2D(filters=128, kernel_size=1, strides=1, padding='valid')(org_x)
+        x = tf.keras.layers.BatchNormalization()(
+            x)
+        x = tf.keras.layers.Activation(
+            'relu')(
+            x)
+
+        x = tf.keras.layers.Conv2D(
+            filters=128,
+            kernel_size=3,
+            strides=1,
+            padding='same')(x)
+        x = tf.keras.layers.BatchNormalization()(
+            x)
+        x = tf.keras.layers.Activation(
+            'relu')(
+            x)
+
+        x = tf.keras.layers.Conv2D(
+            filters=512,
+            kernel_size=1,
+            strides=1,
+            padding='valid')(
+            x)
+        x = tf.keras.layers.BatchNormalization()(
+            x)
+        x = tf.keras.layers.Activation(
+            'relu')(
+            x)
+
+        x = tf.keras.layers.Add()([x, org_x])
+        x = tf.keras.layers.Activation('relu')(x)
+
+    return x
+
+def resnet50_model_conv4(x):
+    org_x = x
+
+    x = tf.keras.layers.Conv2D(
+        filters=256,
+        kernel_size=1,
+        strieds=2,
+        padding='valid')(
+        org_x)
+    x = tf.keras.layers.BatchNormalization()(
+        x)
+    x = tf.keras.layers.Activation(
+        'relu')(
+        x)
+
+    x = tf.keras.layers.Conv2D(
+        filters=128,
+        kernel_size=3,
+        strides=1,
+        padding='same')(
+        x)
+    x = tf.keras.layers.BatchNormalization()(
+        x)
+    x = tf.keras.layers.Activation(
+        'relu')(
+        x)
+
+    x = tf.keras.layers.Conv2D(
+        filters=512,
+        kernel_size=1,
+        strides=1,
+        padding='valid')(
+        x)
+    x = tf.keras.layers.BatchNormalization()(
+        x)
+
+    ano_x = tf.keras.layers.Conv2D(
+        filters=512,
+        kernel_size=1,
+        strides=2,
+        padding='valid')(
+        org_x)
+    ano_x = tf.keras.layers.BatchNormalization()(
+        ano_x)
+
+    x = tf.keras.layers.Add()(
+        [
+            x,
+            ano_x])
+    x = tf.keras.layers.Activation(
+        'relu')(
+        x)
+
+    for i in range(
+            3):
+        x = tf.keras.layers.Conv2D(
+            filters=128,
+            kernel_size=1,
+            strides=1,
+            padding='valid')(
+            org_x)
+        x = tf.keras.layers.BatchNormalization()(
+            x)
+        x = tf.keras.layers.Activation(
+            'relu')(
+            x)
+
+        x = tf.keras.layers.Conv2D(
+            filters=128,
+            kernel_size=3,
+            strides=1,
+            padding='same')(
+            x)
+        x = tf.keras.layers.BatchNormalization()(
+            x)
+        x = tf.keras.layers.Activation(
+            'relu')(
+            x)
+
+        x = tf.keras.layers.Conv2D(
+            filters=512,
+            kernel_size=1,
+            strides=1,
+            padding='valid')(
+            x)
+        x = tf.keras.layers.BatchNormalization()(
+            x)
+        x = tf.keras.layers.Activation(
+            'relu')(
+            x)
+
+        x = tf.keras.layers.Add()(
+            [
+                x,
+                org_x])
+        x = tf.keras.layers.Activation(
+            'relu')(
+            x)
+
+    return x
 
 model = tf.keras.applications.ResNet50(include_top=True, weights=None, input_tensor=None,
                                        input_shape=(180, 180, 3),
