@@ -1,13 +1,9 @@
-import \
-    tensorflow as tf
-import \
-    matplotlib.pyplot as plt
-import \
-    numpy as np
-import \
-    pathlib
-from tensorflow.keras.callbacks import \
-    ModelCheckpoint
+import tensorflow as tf
+import matplotlib.pyplot as plt
+import numpy as np
+import pathlib
+from tensorflow.keras.callbacks import ModelCheckpoint
+
 
 # 1. 데이터
 (
@@ -22,11 +18,9 @@ test_x = tf.expand_dims(test_x, 3)
 val_x = train_x[:5000]
 val_y = train_y[:5000]
 
-batch_size = 32
-img_height = 180
-img_width = 180
+batch_size = 10000
 
-num_of_classes = 4
+num_of_classes = 10
 
 
 # 2. 모델 빌드: resnet50
@@ -457,9 +451,12 @@ def whole_resnet50_model(x):
 
     return x
 
-output = whole_resnet50_model(train_x)
 
-resnet50_model = tf.keras.models.Model(test_x, output)
+inputs = tf.keras.Input([train_x.shape[1], train_x.shape[2], train_x.shape[3]])
+
+outputs = whole_resnet50_model(inputs)
+
+resnet50_model = tf.keras.models.Model(inputs, outputs=outputs)
 
 
 # 3. 모델 학습
