@@ -1,7 +1,7 @@
-# Machine Learning
+# Deep Learning
 
 Like air,
 Everywhere,
 Airy-All
 
-about Machine Learning 
+about Deep Learning
